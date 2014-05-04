@@ -80,6 +80,8 @@ var WebapiGenerator = yeoman.generators.Base.extend({
 
     this.webprojectguid = generateGuid();
     this.coreprojectguid = generateGuid();
+    this.databaseprojectguid = generateGuid();
+    this.testsprojectguid = generateGuid();
   },
 
   app: function () {
@@ -137,11 +139,29 @@ var WebapiGenerator = yeoman.generators.Base.extend({
   },
 
   database: function(){
-    this.mkdir(this.path + '.database');
+    this.databaseassemblyguid = generateGuid();
+    var pathToDatabaseFolder = this.path + '.database/';
+
+    this.mkdir(pathToDatabaseFolder);
+    this.template('src/database/_webapi.database.csproj', pathToDatabaseFolder + this.safeprojectname + '.database.csproj');
+
+    this.mkdir(pathToDatabaseFolder + '/Properties');
+    this.template('src/database/properties/_assemblyinfo.cs', pathToDatabaseFolder + 'Properties/AssemblyInfo.cs');
+
+    this.mkdir(pathToDatabaseFolder + '/Scripts');
   },
 
   tests: function(){
-    this.mkdir(this.path + '.tests');
+    this.testsassemblyguid = generateGuid();
+    var pathToTestsFolder = this.path + '.tests/';
+
+    this.mkdir(pathToTestsFolder);
+    this.template('src/tests/_webapi.tests.csproj', pathToTestsFolder + this.safeprojectname + '.tests.csproj');
+
+    this.mkdir(pathToTestsFolder + '/Properties');
+    this.template('src/tests/properties/_assemblyinfo.cs', pathToTestsFolder + 'Properties/AssemblyInfo.cs');
+
+    this.mkdir(pathToTestsFolder + '/Services');
   },
 
   nuget: function(){
