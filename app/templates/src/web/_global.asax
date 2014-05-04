@@ -1,1 +1,1 @@
-<%= asaxentry %>="Global.asax.<%= languageext %>" Inherits="<%= safeprojectname %>.<%= globalclassname %>" Language="<%= language %>" %>
+<%= asaxentry %>="Global.asax.<%= languageext %>" Inherits="<%= safeprojectname %>.web.<%= globalclassname %>" Language="<%= language %>" %>
