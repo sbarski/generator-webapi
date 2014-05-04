@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("<%= safeprojectname %>.web")]
+[assembly: AssemblyTitle("<%= safeprojectname %>.tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("<%= safeprojectname %>.web")]
+[assembly: AssemblyProduct("<%= safeprojectname %>.tests")]
 [assembly: AssemblyCopyright("Copyright ©")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("<%= webassemblyguid %>")]
+[assembly: Guid("<%= testsassemblyguid %>")]
 
 // Version information for an assembly consists of the following four values:
 //
