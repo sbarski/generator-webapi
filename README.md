@@ -1,6 +1,6 @@
 # generator-webapi [![Build Status](https://secure.travis-ci.org/sbarski/generator-webapi.png?branch=master)](https://travis-ci.org/sbarski/generator-webapi)
 
-> [Yeoman](http://yeoman.io) generator for ASP.NET Web API 2.0 for Windows and Mac/Linux (via mono)
+> [Yeoman](http://yeoman.io) generator for ASP.NET Web API 2.0 for Windows (and Mac/Linux via mono)
 
 
 ## Getting Started
