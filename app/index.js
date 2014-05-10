@@ -4,8 +4,6 @@ var path = require('path');
 var chalk = require('chalk');
 var yeoman = require('yeoman-generator');
 
-
-
 var exec = require('child_process').execFile;
 
 
@@ -30,12 +28,13 @@ var WebapiGenerator = yeoman.generators.Base.extend({
         if (isWin){
           this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.web\\packages.config', '-OutputDirectory', 'src\\packages']);
         } else {
+          console.log('You must have mono installed to run nuget...');
+
           this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.web/packages.config', '-OutputDirectory', 'src/packages']);
         }
       }
 
-
-        this.installDependencies();
+      this.installDependencies();
       }
     });
   },
