@@ -1,9 +1,13 @@
 'use strict';
 var util = require('util');
 var path = require('path');
-var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
+var yeoman = require('yeoman-generator');
+
+
+
 var exec = require('child_process').execFile;
+
 
 var generateGuid = function()
 {
@@ -20,10 +24,17 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.on('end', function () {
       if (!this.options['skip-install']) {
 
-        if(this.nuget){
+      var isWin = /^win/.test(process.platform);
+
+      if(this.nuget){
+        if (isWin){
           this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.web\\packages.config', '-OutputDirectory', 'src\\packages']);
+        } else {
+          this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.web/packages.config', '-OutputDirectory', 'src/packages']);
         }
-        
+      }
+
+
         this.installDependencies();
       }
     });
@@ -98,8 +109,8 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.mkdir(pathToWebFolder);
     this.template('src/web/_webapi.web.csproj', pathToWebFolder + this.safeprojectname + '.web.csproj');
 
-    this.template('src/web/_global.asax', pathToWebFolder + 'Global.asax'); 
-    this.template('src/web/_global.asax.cs', pathToWebFolder + 'Global.asax.cs'); 
+    this.template('src/web/_global.asax', pathToWebFolder + 'Global.asax');
+    this.template('src/web/_global.asax.cs', pathToWebFolder + 'Global.asax.cs');
 
     this.copy('src/web/_web.config', pathToWebFolder + 'Web.config');
     this.copy('src/web/_web.debug.config', pathToWebFolder + 'Web.Debug.config');
@@ -122,7 +133,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       this.mkdir('tools/nuget');
       this.fetch('http://nuget.org/nuget.exe', 'tools/nuget', cb);
     }
-      
+
     this.mkdir('src/packages');
     this.copy('src/web/packages.config', this.path + '.web/packages.config');
   },
