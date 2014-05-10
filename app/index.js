@@ -28,7 +28,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
         if (isWin){
           this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.web\\packages.config', '-OutputDirectory', 'src\\packages']);
         } else {
-          console.log('You must have mono installed to run nuget...');
+          console.log('\n\nYou must have mono installed to run nuget...');
 
           this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.web/packages.config', '-OutputDirectory', 'src/packages']);
         }
