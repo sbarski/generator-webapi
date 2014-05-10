@@ -19,7 +19,6 @@ describe('webapi generator', function () {
 
   it('creates expected files', function (done) {
     var expected = [
-      // add files you expect to exist here.
       'src/my-company.my-web-api.sln',
       'src/my-company.my-web-api.web/my-company.my-web-api.web.csproj',
       'src/my-company.my-web-api.web/Global.asax',
