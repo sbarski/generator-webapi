@@ -6,7 +6,6 @@ var yeoman = require('yeoman-generator');
 
 var exec = require('child_process').execFile;
 
-
 var generateGuid = function()
 {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -53,17 +52,46 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       name: 'namespace',
       message: 'What is the name of your company or preferred root namespace?',
       default: 'mycompany'
-    },
-    {
+    },{
       type: 'input',
       name: 'name',
       message: 'What is the name of your project?',
       default: 'mywebapi'
-    },
-    {
+    },{
       type: 'confirm',
       name: 'nuget',
       message: 'Install and run nuget?',
+      default: true
+    },{
+      type: 'confirm',
+      name: 'advanced',
+      message: 'Would you like to configure advanced options?',
+      default: true
+    },{
+      when: function (response){
+        return response.advanced
+      },
+      type: 'checkbox',
+      message: 'Select additional projects to generator (the web project will be included automatically)',
+      name: 'projects',
+      default: ['core', 'database', 'test'],
+      choices: [{
+        name: 'core',
+        selected: true
+      }, {
+        name: 'database',
+        selected: true
+      }, {
+        name: 'test',
+        selected: true
+      }] 
+    },{
+      when: function(response){
+        return response.advanced
+      },
+      type: 'confirm',
+      name: 'autofac',
+      message: 'Install and configure autofac for IoC?',
       default: true
     }];
 
@@ -71,6 +99,12 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       this.namespace = props.namespace ? props.namespace : 'my company';
       this.name = props.name ? props.name : 'my web api';
       this.nuget = props.nuget;
+      this.projects = props.projects;
+      this.autofac = props.autofac;
+
+      this.core = this.projects.indexOf('core') > -1;
+      this.database = this.projects.indexOf('database') > -1;
+      this.test = this.projects.indexOf('test') > -1;
 
       done();
     }.bind(this));
@@ -88,6 +122,10 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.nugetpackagesfolder =  '..\\packages\\';
 
     this.webprojectguid = generateGuid();
+
+    if (this.core) {
+      this.coreprojectguid = generateGuid();
+    }
   },
 
   app: function () {
@@ -123,6 +161,31 @@ var WebapiGenerator = yeoman.generators.Base.extend({
 
     this.mkdir(pathToWebFolder + '/App_Start');
     this.mkdir(pathToWebFolder + '/App_Data');
+
+    if (this.autofac) {
+      this.template('src/web/app_start/_autofacConfig.cs', pathToWebFolder + 'App_Start/AutofacConfig.cs');
+    }
+  },
+
+  core: function(){
+    if (this.core){
+      this.coreassemblyguid = generateGuid();
+ 
+      var pathToCoreFolder = this.path + '/';
+ 
+      this.mkdir(this.path);
+      this.copy('src/core/_webapi.core.csproj', pathToCoreFolder + this.safeprojectname + '.csproj');
+ 
+      this.mkdir(pathToCoreFolder + '/Properties');
+      this.template('src/core/properties/_assemblyinfo.cs', pathToCoreFolder + 'Properties/AssemblyInfo.cs');
+ 
+      this.mkdir(pathToCoreFolder + '/Configuration');
+      this.mkdir(pathToCoreFolder + '/Exceptions');
+      this.mkdir(pathToCoreFolder + '/Mappings');
+      this.mkdir(pathToCoreFolder + '/Model');
+      this.mkdir(pathToCoreFolder + '/Security');
+      this.mkdir(pathToCoreFolder + '/Services');
+    }
   },
 
   nuget: function(){
@@ -134,7 +197,11 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     }
 
     this.mkdir('src/packages');
-    this.copy('src/web/packages.config', this.path + '.web/packages.config');
+    this.template('src/web/packages.config', this.path + '.web/packages.config');
+
+    if (this.core){
+      this.template('src/core/_packages.config', this.path + '/packages.config');
+    }
   },
 
   projectfiles: function () {

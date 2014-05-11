@@ -19,6 +19,10 @@ namespace <%= safeprojectname %>.web
         	GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
 
+            <% if (autofac) { %>
+            AutofacConfig.Register();
+            <% } %>
+
             GlobalConfiguration.Configuration.EnsureInitialized();
         }
     }

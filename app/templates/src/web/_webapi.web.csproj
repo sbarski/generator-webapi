@@ -54,6 +54,14 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath><%= nugetpackagesfolder %>Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <% if (autofac) { %>
+    <Reference Include="Autofac">
+      <HintPath><%= nugetpackagesfolder %>Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi">
+      <HintPath>..\packages\Autofac.WebApi2.3.3.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <% } %>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -62,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -73,8 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ValuesController.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
