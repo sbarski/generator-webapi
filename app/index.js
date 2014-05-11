@@ -102,9 +102,9 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       this.projects = props.projects;
       this.autofac = props.autofac;
 
-      this.core = this.projects.indexOf('core') > -1;
-      this.database = this.projects.indexOf('database') > -1;
-      this.test = this.projects.indexOf('test') > -1;
+      this.core = this.projects && this.projects.indexOf('core') > -1;
+      this.database = this.projects && this.projects.indexOf('database') > -1;
+      this.test = this.projects && this.projects.indexOf('test') > -1;
 
       done();
     }.bind(this));
