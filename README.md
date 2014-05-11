@@ -41,6 +41,10 @@ Yeoman has a heart of gold. He's a person with feelings and opinions, but he's v
 
 If you'd like to get to know Yeoman better and meet some of his friends, [Grunt](http://gruntjs.com) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).
 
+## Credits
+* [https://github.com/moodmosaic/EmptyWebApiProjectTemplate](https://github.com/moodmosaic/EmptyWebApiProjectTemplate)
+* [https://github.com/Haacked/ReallyEmptyMvc3ProjectTemplate](https://github.com/Haacked/ReallyEmptyMvc3ProjectTemplate)
+* [http://visualstudiogallery.msdn.microsoft.com/a989a149-4bc3-4292-ac8a-5101ee1722d7](http://visualstudiogallery.msdn.microsoft.com/a989a149-4bc3-4292-ac8a-5101ee1722d7)
 
 ## License
 
