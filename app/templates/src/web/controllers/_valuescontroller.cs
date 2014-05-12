@@ -1,15 +1,31 @@
 using System.Collections.Generic;
 using System.Web.Http;
+<% if (autofac) { %>
+using mycompany.mywebapi.Services;
+<% } %>
 
 namespace <%= safeprojectname %>.web.Controllers
 {
     [RoutePrefix("api/values")]
     public class ValuesController : ApiController
     {
+        <% if (autofac) { %>
+        private readonly ISampleReadService _sampleReadService;
+
+        public ValuesController(ISampleReadService sampleReadService)
+        {
+            _sampleReadService = sampleReadService;
+        }
+        <% } %>
+ 
         [Route]
         public IEnumerable<string> Get()
         {
+            <% if (autofac) { %>
+            return new string[] { "value1", "value2", _sampleReadService.ReadData() };
+            <% } else { %>
             return new string[] { "value1", "value2" };
+            <% } %>
         }
 
         [Route("{id:int}")]

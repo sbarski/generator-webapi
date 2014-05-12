@@ -18,6 +18,13 @@ namespace <%= safeprojectname %>.web
                 .AsSelf()
                 .AsImplementedInterfaces();
 
+            <% if (core) { %>
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Services.ISampleReadService)))
+                .PropertiesAutowired()
+                .AsSelf()
+                .AsImplementedInterfaces();
+            <% } %>
+
             //Build the container
             var container = builder.Build();
 

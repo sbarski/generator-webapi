@@ -74,7 +74,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       type: 'checkbox',
       message: 'Select additional projects to generator (the web project will be included automatically)',
       name: 'projects',
-      default: ['core', 'database', 'test'],
+      default: ['core', 'database', 'tests'],
       choices: [{
         name: 'core',
         selected: true
@@ -82,7 +82,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
         name: 'database',
         selected: true
       }, {
-        name: 'test',
+        name: 'tests',
         selected: true
       }] 
     },{
@@ -104,7 +104,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
 
       this.core = this.projects && this.projects.indexOf('core') > -1;
       this.database = this.projects && this.projects.indexOf('database') > -1;
-      this.test = this.projects && this.projects.indexOf('test') > -1;
+      this.tests = this.projects && this.projects.indexOf('tests') > -1;
 
       done();
     }.bind(this));
@@ -122,20 +122,73 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.nugetpackagesfolder =  '..\\packages\\';
 
     this.webprojectguid = generateGuid();
-
-    if (this.core) {
-      this.coreprojectguid = generateGuid();
-    }
   },
 
   app: function () {
     this.mkdir('src');
     this.mkdir('tools');
 
-    this.template('src/_webapi.sln', this.path + '.sln');
-
     this.copy('_package.json', 'package.json');
     this.copy('_bower.json', 'bower.json');
+  },
+
+  core: function(){
+    if (this.core){
+      this.coreprojectguid = generateGuid();
+      this.coreassemblyguid = generateGuid();
+ 
+      var pathToCoreFolder = this.path + '/';
+ 
+      this.mkdir(this.path);
+      this.copy('src/core/_webapi.core.csproj', pathToCoreFolder + this.safeprojectname + '.csproj');
+ 
+      this.mkdir(pathToCoreFolder + '/Properties');
+      this.template('src/core/properties/_assemblyinfo.cs', pathToCoreFolder + 'Properties/AssemblyInfo.cs');
+ 
+      this.mkdir(pathToCoreFolder + '/Configuration');
+      this.mkdir(pathToCoreFolder + '/Exceptions');
+      this.mkdir(pathToCoreFolder + '/Mappings');
+      this.mkdir(pathToCoreFolder + '/Model');
+      this.mkdir(pathToCoreFolder + '/Security');
+      this.mkdir(pathToCoreFolder + '/Services');
+
+      this.template('src/core/services/_isamplereadservice.cs', pathToCoreFolder + 'Services/ISampleReadService.cs');
+      this.template('src/core/services/_samplereadservice.cs', pathToCoreFolder + 'Services/SampleReadService.cs');
+    }
+  },
+
+  database: function(){
+    if (this.database){
+      this.databaseassemblyguid = generateGuid();
+      this.databaseprojectguid = generateGuid();
+
+      var pathToDatabaseFolder = this.path + '.database/';
+ 
+      this.mkdir(pathToDatabaseFolder);
+      this.template('src/database/_webapi.database.csproj', pathToDatabaseFolder + this.safeprojectname + '.database.csproj');
+  
+      this.mkdir(pathToDatabaseFolder + '/Properties');
+      this.template('src/database/properties/_assemblyinfo.cs', pathToDatabaseFolder + 'Properties/AssemblyInfo.cs');
+  
+      this.mkdir(pathToDatabaseFolder + '/Scripts');
+    }
+  },
+
+  tests: function(){
+    if (this.tests){
+      this.testsassemblyguid = generateGuid();
+      this.testsprojectguid = generateGuid();
+
+      var pathToTestsFolder = this.path + '.tests/';
+  
+      this.mkdir(pathToTestsFolder);
+      this.template('src/tests/_webapi.tests.csproj', pathToTestsFolder + this.safeprojectname + '.tests.csproj');
+  
+      this.mkdir(pathToTestsFolder + '/Properties');
+      this.template('src/tests/properties/_assemblyinfo.cs', pathToTestsFolder + 'Properties/AssemblyInfo.cs');
+ 
+      this.mkdir(pathToTestsFolder + '/Services');
+    }
   },
 
   web: function(){
@@ -167,27 +220,6 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     }
   },
 
-  core: function(){
-    if (this.core){
-      this.coreassemblyguid = generateGuid();
- 
-      var pathToCoreFolder = this.path + '/';
- 
-      this.mkdir(this.path);
-      this.copy('src/core/_webapi.core.csproj', pathToCoreFolder + this.safeprojectname + '.csproj');
- 
-      this.mkdir(pathToCoreFolder + '/Properties');
-      this.template('src/core/properties/_assemblyinfo.cs', pathToCoreFolder + 'Properties/AssemblyInfo.cs');
- 
-      this.mkdir(pathToCoreFolder + '/Configuration');
-      this.mkdir(pathToCoreFolder + '/Exceptions');
-      this.mkdir(pathToCoreFolder + '/Mappings');
-      this.mkdir(pathToCoreFolder + '/Model');
-      this.mkdir(pathToCoreFolder + '/Security');
-      this.mkdir(pathToCoreFolder + '/Services');
-    }
-  },
-
   nuget: function(){
     if (this.nuget){
       var cb = this.async();
@@ -205,6 +237,8 @@ var WebapiGenerator = yeoman.generators.Base.extend({
   },
 
   projectfiles: function () {
+    this.template('src/_webapi.sln', this.path + '.sln');
+
     this.copy('editorconfig', '.editorconfig');
     this.copy('jshintrc', '.jshintrc');
   }
