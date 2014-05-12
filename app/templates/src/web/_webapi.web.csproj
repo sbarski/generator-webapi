@@ -88,13 +88,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>    
+  </ItemGroup>
+  <% if (core) { %>
   <ItemGroup>
     <ProjectReference Include="..\<%= safeprojectname %>\<%= safeprojectname %>.csproj">
       <Project>{<%= coreprojectguid %>}</Project>
       <Name><%= safeprojectname %></Name>
     </ProjectReference>
   </ItemGroup>
+  <% } %>    
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
