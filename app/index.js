@@ -98,7 +98,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       }] 
     },{
       when: function(response){
-        return response.advanced && response.projects && response.projects.indexOf('tests');
+        return response.advanced && response.projects && response.projects.indexOf('tests') > -1;
       },
       type: 'confirm',
       name: 'install_test_packages',
