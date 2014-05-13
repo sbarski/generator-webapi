@@ -2,3 +2,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= safeprojectname %>.web", "<%= safeprojectname %>.web\<%= safeprojectname %>.web.csproj", "{<%= webprojectguid %>}"
 EndProject
+<% if (core) { %>
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= safeprojectname %>", "<%= safeprojectname %>\<%= safeprojectname %>.csproj", "{<%= coreprojectguid %>}"
+EndProject
+<% } %>
+<% if (database) { %>
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= safeprojectname %>.database", "<%= safeprojectname %>.database\<%= safeprojectname %>.database.csproj", "{<%= databaseprojectguid %>}"
+EndProject
+<% } %>
+<% if (tests) { %>
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= safeprojectname %>.tests", "<%= safeprojectname %>.tests\<%= safeprojectname %>.tests.csproj", "{<%= testsprojectguid %>}"
+EndProject
+<% } %>

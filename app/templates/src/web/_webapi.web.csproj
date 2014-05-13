@@ -54,6 +54,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath><%= nugetpackagesfolder %>Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <% if (autofac) { %>
+    <Reference Include="Autofac">
+      <HintPath><%= nugetpackagesfolder %>Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi">
+      <HintPath>..\packages\Autofac.WebApi2.3.3.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <Compile Include="App_Start\AutofacConfig.cs" />
+    <% } %>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -67,18 +76,30 @@
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Web.Release.config">
+    <Content Include="Web.Staging.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ValuesController.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>    
+  </ItemGroup>
+  <% if (core) { %>
+  <ItemGroup>
+    <ProjectReference Include="..\<%= safeprojectname %>\<%= safeprojectname %>.csproj">
+      <Project>{<%= coreprojectguid %>}</Project>
+      <Name><%= safeprojectname %></Name>
+    </ProjectReference>
+  </ItemGroup>
+  <% } %>    
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -96,8 +117,7 @@
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl></IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
