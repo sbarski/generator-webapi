@@ -39,6 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
+    <% if (tests && install_test_packages) { %>
+    <Reference Include="Moq">
+      <HintPath><%= nugetpackagesfolder %>Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath><%= nugetpackagesfolder %>NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <% } %>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

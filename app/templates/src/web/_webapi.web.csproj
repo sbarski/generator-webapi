@@ -76,7 +76,10 @@
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Web.Release.config">
+    <Content Include="Web.Staging.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
