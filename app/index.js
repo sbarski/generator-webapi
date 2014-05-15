@@ -1,18 +1,16 @@
 'use strict';
-var util = require('util');
-var path = require('path');
 var chalk = require('chalk');
 var yeoman = require('yeoman-generator');
 
-var exec = require('child_process').execFile;
-
-var generateGuid = function()
+var generateGuid = function ()
 {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    /*jslint bitwise: true */
+    var r = Math.random() * 16|0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    /*jslint bitwise: false */
     return v.toString(16);
   });
-}
+};
 
 var WebapiGenerator = yeoman.generators.Base.extend({
   init: function () {
@@ -21,30 +19,34 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.on('end', function () {
       if (!this.options['skip-install']) {
 
-      var isWin = /^win/.test(process.platform);
+        var isWin = /^win/.test(process.platform);
 
-      if(this.nuget){
-        if (isWin){
-          this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.web\\packages.config', '-OutputDirectory', 'src\\packages']);
+        if (this.nuget) {
+          if (isWin) {
+            this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.web\\packages.config', '-OutputDirectory', 'src\\packages']);
+            /*jshint camelcase: false */
 
-          if (this.tests && this.install_test_packages)
-          {
-            this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.tests\\packages.config', '-OutputDirectory', 'src\\packages']);
-          }
+            if (this.tests && this.install_test_packages)
+            {
+              this.spawnCommand('tools\\nuget\\nuget.exe', ['install', 'src\\' + this.safeprojectname + '.tests\\packages.config', '-OutputDirectory', 'src\\packages']);
+            }
+            /*jshint camelcase: true */
 
-        } else {
-          console.log('\n\nYou must have mono installed to run nuget...');
+          } else {
+            console.log('\n\nYou must have mono installed to run nuget...');
 
-          this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.web/packages.config', '-OutputDirectory', 'src/packages']);
+            this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.web/packages.config', '-OutputDirectory', 'src/packages']);
 
-          if (this.tests && this.install_test_packages)
-          {
-            this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.tests/packages.config', '-OutputDirectory', 'src/packages']);
+            /*jshint camelcase: false */
+            if (this.tests && this.install_test_packages)
+            {
+              this.spawnCommand('mono', ['tools/nuget/nuget.exe', 'install', 'src/' + this.safeprojectname + '.tests/packages.config', '-OutputDirectory', 'src/packages']);
+            }
+            /*jshint camelcase: true */
           }
         }
-      }
 
-      this.installDependencies();
+        this.installDependencies();
       }
     });
   },
@@ -63,24 +65,24 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       name: 'namespace',
       message: 'What is the name of your company or preferred root namespace?',
       default: 'mycompany'
-    },{
+    }, {
       type: 'input',
       name: 'name',
       message: 'What is the name of your project?',
       default: 'mywebapi'
-    },{
+    }, {
       type: 'confirm',
       name: 'nuget',
       message: 'Install and run nuget?',
       default: true
-    },{
+    }, {
       type: 'confirm',
       name: 'advanced',
       message: 'Would you like to configure advanced options?',
       default: true
-    },{
-      when: function (response){
-        return response.advanced
+    }, {
+      when: function (response) {
+        return response.advanced;
       },
       type: 'checkbox',
       message: 'Select additional projects to generator (the web project will be included automatically)',
@@ -95,18 +97,18 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       }, {
         name: 'tests',
         selected: true
-      }] 
-    },{
-      when: function(response){
+      }]
+    }, {
+      when: function (response) {
         return response.advanced && response.projects && response.projects.indexOf('tests') > -1;
       },
       type: 'confirm',
       name: 'install_test_packages',
       message: 'Install NUnit, Moq and Sample Tests?',
       default: true
-    },{
-      when: function(response){
-        return response.advanced
+    }, {
+      when: function (response) {
+        return response.advanced;
       },
       type: 'confirm',
       name: 'autofac',
@@ -125,17 +127,19 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       this.database = this.projects && this.projects.indexOf('database') > -1;
       this.tests = this.projects && this.projects.indexOf('tests') > -1;
 
+      /*jshint camelcase: false */
       this.install_test_packages = props.install_test_packages;
+      /*jshint camelcase: true */
 
       done();
     }.bind(this));
   },
 
-  defaults: function(){
+  defaults: function () {
     this.language = 'c#';
     this.globalclassname = 'WebApiApplication';
     this.asaxentry = '<%@ Application Codebehind';
-    this.languageext = 'cs'
+    this.languageext = 'cs';
 
     this.safeprojectname = this._.slugify(this.namespace) + '.' + this._.slugify(this.name);
 
@@ -153,19 +157,19 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.copy('_bower.json', 'bower.json');
   },
 
-  core: function(){
-    if (this.core){
+  core: function () {
+    if (this.core) {
       this.coreprojectguid = generateGuid();
       this.coreassemblyguid = generateGuid();
- 
+
       var pathToCoreFolder = this.path + '/';
- 
+
       this.mkdir(this.path);
       this.copy('src/core/_webapi.core.csproj', pathToCoreFolder + this.safeprojectname + '.csproj');
- 
+
       this.mkdir(pathToCoreFolder + '/Properties');
       this.template('src/core/properties/_assemblyinfo.cs', pathToCoreFolder + 'Properties/AssemblyInfo.cs');
- 
+
       this.mkdir(pathToCoreFolder + '/Configuration');
       this.mkdir(pathToCoreFolder + '/Exceptions');
       this.mkdir(pathToCoreFolder + '/Mappings');
@@ -178,41 +182,41 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     }
   },
 
-  database: function(){
-    if (this.database){
+  database: function () {
+    if (this.database) {
       this.databaseassemblyguid = generateGuid();
       this.databaseprojectguid = generateGuid();
 
       var pathToDatabaseFolder = this.path + '.database/';
- 
+
       this.mkdir(pathToDatabaseFolder);
       this.template('src/database/_webapi.database.csproj', pathToDatabaseFolder + this.safeprojectname + '.database.csproj');
-  
+
       this.mkdir(pathToDatabaseFolder + '/Properties');
       this.template('src/database/properties/_assemblyinfo.cs', pathToDatabaseFolder + 'Properties/AssemblyInfo.cs');
-  
+
       this.mkdir(pathToDatabaseFolder + '/Scripts');
     }
   },
 
-  tests: function(){
-    if (this.tests){
+  tests: function () {
+    if (this.tests) {
       this.testsassemblyguid = generateGuid();
       this.testsprojectguid = generateGuid();
 
       var pathToTestsFolder = this.path + '.tests/';
-  
+
       this.mkdir(pathToTestsFolder);
       this.template('src/tests/_webapi.tests.csproj', pathToTestsFolder + this.safeprojectname + '.tests.csproj');
-  
+
       this.mkdir(pathToTestsFolder + '/Properties');
       this.template('src/tests/properties/_assemblyinfo.cs', pathToTestsFolder + 'Properties/AssemblyInfo.cs');
- 
+
       this.mkdir(pathToTestsFolder + '/Services');
     }
   },
 
-  web: function(){
+  web: function () {
     this.webassemblyguid = generateGuid();
 
     var pathToWebFolder = this.path + '.web/';
@@ -242,8 +246,8 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     }
   },
 
-  nuget: function(){
-    if (this.nuget){
+  nuget: function () {
+    if (this.nuget) {
       var cb = this.async();
 
       this.mkdir('tools/nuget');
@@ -253,13 +257,15 @@ var WebapiGenerator = yeoman.generators.Base.extend({
     this.mkdir('src/packages');
     this.template('src/web/_packages.config', this.path + '.web/packages.config');
 
-    if (this.core){
+    if (this.core) {
       this.template('src/core/_packages.config', this.path + '/packages.config');
     }
 
-    if (this.tests && this.install_test_packages){
+    /*jshint camelcase: false */
+    if (this.tests && this.install_test_packages) {
       this.template('src/tests/_packages.config', this.path + '.tests/packages.config');
     }
+    /*jshint camelcase: true */
   },
 
   projectfiles: function () {
