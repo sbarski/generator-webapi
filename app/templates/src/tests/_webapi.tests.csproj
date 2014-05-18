@@ -41,11 +41,11 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <% if (tests && install_test_packages) { %>
-    <Reference Include="Moq">
-      <HintPath><%= nugetpackagesfolder %>Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
+    <Reference Include="NSubstitute">
+      <HintPath><%= nugetpackagesfolder %>NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath><%= nugetpackagesfolder %>NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="xunit">
+      <HintPath><%= nugetpackagesfolder %>xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
     <% } %>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
