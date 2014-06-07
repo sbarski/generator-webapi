@@ -104,7 +104,7 @@ var WebapiGenerator = yeoman.generators.Base.extend({
       },
       type: 'confirm',
       name: 'install_test_packages',
-      message: 'Install NUnit, Moq and Sample Tests?',
+      message: 'Install xunit, nsubstitute and sample tests?',
       default: true
     }, {
       when: function (response) {
